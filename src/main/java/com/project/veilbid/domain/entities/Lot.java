@@ -1,5 +1,7 @@
-package com.project.veilbid;
+package com.project.veilbid.domain.entities;
 
+import com.project.veilbid.domain.enums.LotStatus;
+import com.project.veilbid.domain.enums.LotType;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;

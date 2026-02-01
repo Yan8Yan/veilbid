@@ -1,4 +1,4 @@
-package com.project.veilbid;
+package com.project.veilbid.domain.enums;
 
 public enum LotType {
     PAINTING,

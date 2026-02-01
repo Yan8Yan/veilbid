@@ -1,4 +1,4 @@
-package com.project.veilbid;
+package com.project.veilbid.domain.entities;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
