@@ -2,6 +2,7 @@ package com.project.veilbid;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -52,14 +53,16 @@ public class Lot {
     @Column(name = "location")
     private String location;
 
-
     @Column(name = "views_count")
     private Integer viewsCount = 0;
+
+    @OneToMany(mappedBy = "lot", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    private List<Bid> bids;
 
     public Lot() {
     }
 
-    public Lot(UUID id, String title, String description, LocalDateTime dueDate, LocalDateTime created, LocalDateTime updated, LotStatus status, LotType type, String imageUrl, Double startingPrice, Double currentPrice, UUID sellerId, String location, Integer viewsCount) {
+    public Lot(UUID id, String title, String description, LocalDateTime dueDate, LocalDateTime created, LocalDateTime updated, LotStatus status, LotType type, String imageUrl, Double startingPrice, Double currentPrice, UUID sellerId, String location, Integer viewsCount, List<Bid> bids) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -74,6 +77,7 @@ public class Lot {
         this.sellerId = sellerId;
         this.location = location;
         this.viewsCount = viewsCount;
+        this.bids = bids;
     }
 
     public UUID getId() {
@@ -188,16 +192,24 @@ public class Lot {
         this.viewsCount = viewsCount;
     }
 
+    public List<Bid> getBids() {
+        return bids;
+    }
+
+    public void setBids(List<Bid> bids) {
+        this.bids = bids;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Lot lot = (Lot) o;
-        return Objects.equals(id, lot.id) && Objects.equals(title, lot.title) && Objects.equals(description, lot.description) && Objects.equals(dueDate, lot.dueDate) && Objects.equals(created, lot.created) && Objects.equals(updated, lot.updated) && status == lot.status && type == lot.type && Objects.equals(imageUrl, lot.imageUrl) && Objects.equals(startingPrice, lot.startingPrice) && Objects.equals(currentPrice, lot.currentPrice) && Objects.equals(sellerId, lot.sellerId) && Objects.equals(location, lot.location) && Objects.equals(viewsCount, lot.viewsCount);
+        return Objects.equals(id, lot.id) && Objects.equals(title, lot.title) && Objects.equals(description, lot.description) && Objects.equals(dueDate, lot.dueDate) && Objects.equals(created, lot.created) && Objects.equals(updated, lot.updated) && status == lot.status && type == lot.type && Objects.equals(imageUrl, lot.imageUrl) && Objects.equals(startingPrice, lot.startingPrice) && Objects.equals(currentPrice, lot.currentPrice) && Objects.equals(sellerId, lot.sellerId) && Objects.equals(location, lot.location) && Objects.equals(viewsCount, lot.viewsCount) && Objects.equals(bids, lot.bids);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, description, dueDate, created, updated, status, type, imageUrl, startingPrice, currentPrice, sellerId, location, viewsCount);
+        return Objects.hash(id, title, description, dueDate, created, updated, status, type, imageUrl, startingPrice, currentPrice, sellerId, location, viewsCount, bids);
     }
 
     @Override
@@ -217,6 +229,7 @@ public class Lot {
                 ", sellerId=" + sellerId +
                 ", location='" + location + '\'' +
                 ", viewsCount=" + viewsCount +
+                ", bids=" + bids +
                 '}';
     }
 }
