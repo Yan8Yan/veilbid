@@ -1,4 +1,5 @@
 package com.project.veilbid.domain.entities;
+
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -9,26 +10,31 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-@Setter
-@Getter
 @Entity
+@Table(name = "users")
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "bids")
-public class Bid {
+public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id", updatable = false, nullable = false, unique = true)
     private UUID id;
 
-    @Column(name = "amount")
-    private Double amount;
+    @Column(name = "name", nullable = false)
+    private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "lot_id")
-    private Lot lot;
+    @Column(name = "email", nullable = false)
+    private String email;
+
+    @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL)
+    private List<Lot> selledLots = new ArrayList<>();
+
+    @ManyToMany
+    @JoinTable(name = "user_bids", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "bid_id"))
+    private List<Lot> userBids = new ArrayList<>();
 
     @CreatedDate
     @Column(name = "created_date", updatable = false, nullable = false)
@@ -37,8 +43,5 @@ public class Bid {
     @LastModifiedBy
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updated;
-
-    @ManyToMany(mappedBy = "userBids")
-    private List<User> bidder = new ArrayList<>();
 
 }
