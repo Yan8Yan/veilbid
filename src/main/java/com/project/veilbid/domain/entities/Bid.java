@@ -3,7 +3,9 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +26,7 @@ public class Bid {
     private UUID id;
 
     @Column(name = "amount")
-    private Double amount;
+    private BigDecimal amount;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "lot_id")
@@ -34,11 +36,12 @@ public class Bid {
     @Column(name = "created_date", updatable = false, nullable = false)
     private LocalDateTime createdAt;
 
-    @LastModifiedBy
+    @LastModifiedDate
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updated;
 
-    @ManyToMany(mappedBy = "userBids")
-    private List<User> bidder = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User bider;
 
 }

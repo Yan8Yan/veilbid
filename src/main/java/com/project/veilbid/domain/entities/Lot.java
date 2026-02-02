@@ -6,7 +6,9 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,15 +52,16 @@ public class Lot {
     private String imageUrl;
 
     @Column(name = "starting_price", nullable = false)
-    private Double startingPrice;
+    private BigDecimal startingPrice;
 
     @Column(name = "current_price")
-    private Double currentPrice;
+    private BigDecimal currentPrice;
 
     @Column(name = "location")
     private String location;
 
-    @OneToMany(mappedBy = "lot", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @Builder.Default
+    @OneToMany(mappedBy = "lot", cascade = CascadeType.ALL)
     private List<Bid> bids;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -69,7 +72,7 @@ public class Lot {
     @Column(name = "created_date", updatable = false, nullable = false)
     private LocalDateTime createdAt;
 
-    @LastModifiedBy
+    @LastModifiedDate
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updated;
 }

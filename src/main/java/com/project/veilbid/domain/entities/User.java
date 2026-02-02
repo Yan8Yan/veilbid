@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -30,17 +31,16 @@ public class User {
     private String email;
 
     @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL)
-    private List<Lot> selledLots = new ArrayList<>();
+    private List<Lot> sellerLots = new ArrayList<>();
 
-    @ManyToMany
-    @JoinTable(name = "user_bids", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "bid_id"))
-    private List<Lot> userBids = new ArrayList<>();
+    @OneToMany(mappedBy = "bidder", cascade = CascadeType.ALL)
+    private List <Bid> bids = new ArrayList<>();
 
     @CreatedDate
     @Column(name = "created_date", updatable = false, nullable = false)
     private LocalDateTime createdAt;
 
-    @LastModifiedBy
+    @LastModifiedDate
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updated;
 
