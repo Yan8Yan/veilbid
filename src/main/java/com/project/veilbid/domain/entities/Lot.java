@@ -16,7 +16,6 @@ import java.util.UUID;
 
 @Setter
 @Getter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
@@ -60,9 +59,8 @@ public class Lot {
     @Column(name = "location")
     private String location;
 
-    @Builder.Default
     @OneToMany(mappedBy = "lot", cascade = CascadeType.ALL)
-    private List<Bid> bids;
+    private List<Bid> bids = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "seller_id")

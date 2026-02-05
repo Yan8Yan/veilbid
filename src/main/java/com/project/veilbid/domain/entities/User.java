@@ -17,7 +17,6 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class User {
 
     @Id
@@ -33,7 +32,7 @@ public class User {
     @OneToMany(mappedBy = "seller", cascade = CascadeType.ALL)
     private List<Lot> sellerLots = new ArrayList<>();
 
-    @OneToMany(mappedBy = "bidder", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "bider", cascade = CascadeType.ALL)
     private List <Bid> bids = new ArrayList<>();
 
     @CreatedDate
