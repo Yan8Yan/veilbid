@@ -1,4 +1,4 @@
-package com.project.veilbid;
+package com.project.veilbid.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

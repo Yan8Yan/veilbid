@@ -5,7 +5,6 @@ import com.project.veilbid.domain.enums.LotType;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import java.math.BigDecimal;
@@ -34,11 +33,11 @@ public class Lot {
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
-    @Column(name = "started", nullable = false, updatable = false)
-    private LocalDateTime started;
+    @Column(name = "start", nullable = false, updatable = false)
+    private LocalDateTime start;
 
-    @Column(name = "ended")
-    private LocalDateTime ended;
+    @Column(name = "end")
+    private LocalDateTime end;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
@@ -79,11 +78,11 @@ public class Lot {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Lot lot = (Lot) o;
-        return Objects.equals(id, lot.id) && Objects.equals(title, lot.title) && Objects.equals(description, lot.description) && Objects.equals(started, lot.started) && Objects.equals(ended, lot.ended) && status == lot.status && type == lot.type && Objects.equals(imageUrl, lot.imageUrl) && Objects.equals(startingPrice, lot.startingPrice) && Objects.equals(currentPrice, lot.currentPrice) && Objects.equals(location, lot.location) && Objects.equals(createdAt, lot.createdAt) && Objects.equals(updated, lot.updated);
+        return Objects.equals(id, lot.id) && Objects.equals(title, lot.title) && Objects.equals(description, lot.description) && Objects.equals(start, lot.start) && Objects.equals(end, lot.end) && status == lot.status && type == lot.type && Objects.equals(imageUrl, lot.imageUrl) && Objects.equals(startingPrice, lot.startingPrice) && Objects.equals(currentPrice, lot.currentPrice) && Objects.equals(location, lot.location) && Objects.equals(createdAt, lot.createdAt) && Objects.equals(updated, lot.updated);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, description, started, ended, status, type, imageUrl, startingPrice, currentPrice, location, createdAt, updated);
+        return Objects.hash(id, title, description, start, end, status, type, imageUrl, startingPrice, currentPrice, location, createdAt, updated);
     }
 }
