@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Setter
@@ -73,4 +74,16 @@ public class Lot {
     @LastModifiedDate
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updated;
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Lot lot = (Lot) o;
+        return Objects.equals(id, lot.id) && Objects.equals(title, lot.title) && Objects.equals(description, lot.description) && Objects.equals(started, lot.started) && Objects.equals(ended, lot.ended) && status == lot.status && type == lot.type && Objects.equals(imageUrl, lot.imageUrl) && Objects.equals(startingPrice, lot.startingPrice) && Objects.equals(currentPrice, lot.currentPrice) && Objects.equals(location, lot.location) && Objects.equals(createdAt, lot.createdAt) && Objects.equals(updated, lot.updated);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title, description, started, ended, status, type, imageUrl, startingPrice, currentPrice, location, createdAt, updated);
+    }
 }
