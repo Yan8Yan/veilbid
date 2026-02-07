@@ -23,7 +23,6 @@ public class LotServiceImpl implements LotService {
     public Lot createLotRequest(UUID sellerId, CreateLotRequest lot) {
         User seller = userRepository.findById(sellerId)
                 .orElseThrow(() -> new UserNotFoundException(String.format("User with ID '%s' not found", sellerId)));
-
         Lot lotToCreate = new Lot();
         lotToCreate.setTitle(lot.getTitle());
         lotToCreate.setDescription(lot.getDescription());

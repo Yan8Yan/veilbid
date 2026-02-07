@@ -78,11 +78,11 @@ public class Lot {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Lot lot = (Lot) o;
-        return Objects.equals(id, lot.id) && Objects.equals(title, lot.title) && Objects.equals(description, lot.description) && Objects.equals(start, lot.start) && Objects.equals(end, lot.end) && status == lot.status && type == lot.type && Objects.equals(imageUrl, lot.imageUrl) && Objects.equals(startingPrice, lot.startingPrice) && Objects.equals(currentPrice, lot.currentPrice) && Objects.equals(location, lot.location) && Objects.equals(createdAt, lot.createdAt) && Objects.equals(updated, lot.updated);
+        return Objects.equals(id, lot.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, description, start, end, status, type, imageUrl, startingPrice, currentPrice, location, createdAt, updated);
+        return Objects.hashCode(id);
     }
 }
