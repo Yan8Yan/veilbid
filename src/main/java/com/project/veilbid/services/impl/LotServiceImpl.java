@@ -37,8 +37,6 @@ public class LotServiceImpl implements LotService {
         lotToCreate.setLocation(lot.getLocation());
         lotToCreate.setSeller(seller);
 
-        lotRepository.save(lotToCreate);
-
-        return null;
+        return lotRepository.save(lotToCreate);
     }
 }
