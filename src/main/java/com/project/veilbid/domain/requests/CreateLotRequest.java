@@ -15,8 +15,8 @@ import java.time.LocalDateTime;
 public class CreateLotRequest {
     private String title;
     private String description;
-    private LocalDateTime start;
-    private LocalDateTime end;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
     private LotStatus status;
     private LotType lotType;
     private String imageUrl;

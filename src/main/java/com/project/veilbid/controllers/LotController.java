@@ -12,11 +12,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -36,5 +34,26 @@ public class LotController {
         Lot createdLot =  lotService.createLotRequest(userId, createLotRequest);
         CreateLotResponseDTO createLotResponseDTO = lotMapper.toDTO(createdLot);
         return new ResponseEntity<>(createLotResponseDTO, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<CreateLotResponseDTO> getLotById(@PathVariable UUID id) {
+
+        Lot lot = lotService.findById(id);
+
+        return ResponseEntity.ok(lotMapper.toDTO(lot));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<CreateLotResponseDTO>> getAllLots(
+            @RequestParam(required = false) String lotType
+    ) {
+        List<Lot> lots = lotService.getAllLots(lotType);
+
+        List<CreateLotResponseDTO> dtoList = lots.stream()
+                .map(lotMapper::toDTO)
+                .toList();
+
+        return ResponseEntity.ok(dtoList);
     }
 }

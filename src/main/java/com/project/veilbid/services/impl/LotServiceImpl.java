@@ -10,6 +10,7 @@ import com.project.veilbid.services.LotService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -26,16 +27,33 @@ public class LotServiceImpl implements LotService {
         Lot lotToCreate = new Lot();
         lotToCreate.setTitle(lot.getTitle());
         lotToCreate.setDescription(lot.getDescription());
-        lotToCreate.setStart(lot.getStart());
-        lotToCreate.setEnd(lot.getEnd());
+        lotToCreate.setStartTime(lot.getStartTime());
+        lotToCreate.setEndTime(lot.getEndTime());
         lotToCreate.setStatus(lot.getStatus());
-        lotToCreate.setType(lot.getLotType());
+        lotToCreate.setLotType(lot.getLotType());
         lotToCreate.setImageUrl(lot.getImageUrl());
         lotToCreate.setStartingPrice(lot.getStartingPrice());
-        lotToCreate.setCurrentPrice(lot.getCurrentPrice());
+        lotToCreate.setCurrentPrice(lot.getStartingPrice());
         lotToCreate.setLocation(lot.getLocation());
         lotToCreate.setSeller(seller);
 
         return lotRepository.save(lotToCreate);
+    }
+
+    @Override
+    public Lot findById(UUID id) {
+        return lotRepository.findById(id)
+                .orElseThrow(() ->
+                        new RuntimeException("Lot not found: " + id));
+    }
+
+    @Override
+    public List<Lot> getAllLots(String lotType) {
+
+        if (lotType == null || lotType.isEmpty()) {
+            return lotRepository.findAll();
+        }
+
+        return lotRepository.findByLotType(lotType);
     }
 }

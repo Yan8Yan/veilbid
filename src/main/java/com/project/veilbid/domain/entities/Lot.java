@@ -33,11 +33,11 @@ public class Lot {
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
-    @Column(name = "start", nullable = false, updatable = false)
-    private LocalDateTime start;
+    @Column(name = "start_time", nullable = false, updatable = false)
+    private LocalDateTime startTime;
 
-    @Column(name = "end")
-    private LocalDateTime end;
+    @Column(name = "end_time")
+    private LocalDateTime endTime;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
@@ -45,7 +45,7 @@ public class Lot {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "type", nullable = false)
-    private LotType type;
+    private LotType lotType;
 
     @Column(name = "image_url")
     private String imageUrl;
