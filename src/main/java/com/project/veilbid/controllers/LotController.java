@@ -11,8 +11,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,40 +25,43 @@ public class LotController {
     private final LotService lotService;
     private final RecommendationService recommendationService;
 
+    // CREATE LOT (через seller из JWT делаем в другом контроллере)
     @PostMapping
     public ResponseEntity<CreateLotResponseDTO> createLot(
-            @AuthenticationPrincipal Jwt jwt,
-            @Valid @RequestBody CreateLotRequestDTO createLotRequestDTO){
-        CreateLotRequest createLotRequest = lotMapper.fromDTO(createLotRequestDTO);
-        UUID userId = UUID.fromString(jwt.getSubject());
-        Lot createdLot =  lotService.createLotRequest(userId, createLotRequest);
-        CreateLotResponseDTO createLotResponseDTO = lotMapper.toDTO(createdLot);
-        return new ResponseEntity<>(createLotResponseDTO, HttpStatus.CREATED);
+            @RequestParam UUID sellerId,
+            @Valid @RequestBody CreateLotRequestDTO dto
+    ) {
+        CreateLotRequest request = lotMapper.fromDTO(dto);
+
+        Lot created = lotService.createLotRequest(sellerId, request);
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(lotMapper.toDTO(created));
     }
 
+    // GET BY ID (и трекинг популярности Redis)
     @GetMapping("/{id}")
-    public ResponseEntity<CreateLotResponseDTO>
-    getLotById(@PathVariable UUID id) {
-
+    public ResponseEntity<CreateLotResponseDTO> getLotById(
+            @PathVariable UUID id
+    ) {
         recommendationService.trackGlobalLot(id);
 
         Lot lot = lotService.findById(id);
 
-        return ResponseEntity.ok(
-                lotMapper.toDTO(lot)
-        );
+        return ResponseEntity.ok(lotMapper.toDTO(lot));
     }
 
+    // GET ALL
     @GetMapping
     public ResponseEntity<List<CreateLotResponseDTO>> getAllLots(
             @RequestParam(required = false) String lotType
     ) {
-        List<Lot> lots = lotService.getAllLots(lotType);
-
-        List<CreateLotResponseDTO> dtoList = lots.stream()
+        List<CreateLotResponseDTO> result = lotService.getAllLots(lotType)
+                .stream()
                 .map(lotMapper::toDTO)
                 .toList();
 
-        return ResponseEntity.ok(dtoList);
+        return ResponseEntity.ok(result);
     }
 }

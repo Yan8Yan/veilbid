@@ -46,4 +46,6 @@ public class RecommendationServiceImpl
 
         return lotRepository.findAllById(lotIds);
     }
+
+
 }

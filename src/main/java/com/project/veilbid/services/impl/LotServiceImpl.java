@@ -56,4 +56,9 @@ public class LotServiceImpl implements LotService {
 
         return lotRepository.findByLotType(lotType);
     }
+
+    @Override
+    public List<Lot> getLotsBySeller(UUID sellerId) {
+        return lotRepository.findBySeller_Id(sellerId);
+    }
 }

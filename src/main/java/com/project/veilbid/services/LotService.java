@@ -12,4 +12,5 @@ public interface LotService {
     Lot createLotRequest(UUID sellerId, CreateLotRequest lot);
     Lot findById(UUID id);
     List<Lot> getAllLots(String lotType);
+    List<Lot> getLotsBySeller(UUID sellerId);
 }
