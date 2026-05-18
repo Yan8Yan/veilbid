@@ -6,6 +6,7 @@ import com.project.veilbid.domain.entities.Lot;
 import com.project.veilbid.domain.requests.CreateLotRequest;
 import com.project.veilbid.mappers.LotMapper;
 import com.project.veilbid.services.LotService;
+import com.project.veilbid.services.RecommendationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -24,6 +25,7 @@ public class LotController {
 
     private final LotMapper lotMapper;
     private final LotService lotService;
+    private final RecommendationService recommendationService;
 
     @PostMapping
     public ResponseEntity<CreateLotResponseDTO> createLot(
@@ -37,11 +39,16 @@ public class LotController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CreateLotResponseDTO> getLotById(@PathVariable UUID id) {
+    public ResponseEntity<CreateLotResponseDTO>
+    getLotById(@PathVariable UUID id) {
+
+        recommendationService.trackGlobalLot(id);
 
         Lot lot = lotService.findById(id);
 
-        return ResponseEntity.ok(lotMapper.toDTO(lot));
+        return ResponseEntity.ok(
+                lotMapper.toDTO(lot)
+        );
     }
 
     @GetMapping

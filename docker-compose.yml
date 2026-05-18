@@ -19,6 +19,7 @@ services:
   adminer:
     image: adminer:latest
     restart: always
+
     ports:
       - "8888:8080"
 
@@ -46,6 +47,14 @@ services:
 
     volumes:
       - keycloak-data:/opt/keycloak/data
+
+  redis:
+    image: redis:7
+    container_name: redis_cache
+    restart: always
+
+    ports:
+      - "6379:6379"
 
 volumes:
   postgres-data:
