@@ -2,6 +2,7 @@ package com.project.veilbid.services.impl;
 
 import com.project.veilbid.domain.entities.Lot;
 import com.project.veilbid.domain.entities.User;
+import com.project.veilbid.domain.enums.LotStatus;
 import com.project.veilbid.domain.requests.CreateLotRequest;
 import com.project.veilbid.exceptions.UserNotFoundException;
 import com.project.veilbid.repositories.LotRepository;
@@ -70,6 +71,19 @@ public class LotServiceImpl implements LotService {
         }
 
         lotRepository.delete(lot);
+    }
+
+    @Override
+    public void closeLot(UUID lotId, UUID userId) {
+        Lot lot = lotRepository.findById(lotId)
+                .orElseThrow(() -> new RuntimeException("Lot not found"));
+
+        if (!lot.getSeller().getId().equals(userId)) {
+            throw new RuntimeException("Not your lot");
+        }
+
+        lot.setStatus(LotStatus.CLOSED);
+        lotRepository.save(lot);
     }
 
 }

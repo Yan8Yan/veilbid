@@ -14,4 +14,5 @@ public interface LotService {
     List<Lot> getAllLots(String lotType);
     List<Lot> getMyLots(UUID sellerId);
     void deleteLot(UUID userId, UUID lotId);
+    void closeLot(UUID lotId, UUID userId);
 }

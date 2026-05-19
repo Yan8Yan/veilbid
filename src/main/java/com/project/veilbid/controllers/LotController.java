@@ -82,5 +82,15 @@ public class LotController {
 
         return ResponseEntity.noContent().build();
     }
+
+    @PatchMapping("/{id}/close")
+    public ResponseEntity<Void> closeLot(
+            @AuthenticationPrincipal Jwt jwt,
+            @PathVariable UUID id
+    ) {
+        UUID userId = UUID.fromString(jwt.getSubject());
+        lotService.closeLot(id, userId);
+        return ResponseEntity.ok().build();
+    }
 }
 
