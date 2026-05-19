@@ -42,11 +42,9 @@ public class LotServiceImpl implements LotService {
 
     @Override
     public Lot findById(UUID id) {
-        return lotRepository.findById(id)
-                .orElseThrow(() ->
-                        new RuntimeException("Lot not found: " + id));
+        return lotRepository.findByIdWithSeller(id)
+                .orElseThrow(() -> new RuntimeException("Lot not found: " + id));
     }
-
     @Override
     public List<Lot> getAllLots(String lotType) {
 
@@ -56,4 +54,6 @@ public class LotServiceImpl implements LotService {
 
         return lotRepository.findByLotType(lotType);
     }
+
+
 }

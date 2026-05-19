@@ -48,6 +48,7 @@ public class UserService {
         userRepository.save(user);
 
         return UserProfileDTO.builder()
+                .id(user.getId())
                 .name(user.getName())
                 .info(user.getInfo())
                 .email(user.getEmail())

@@ -14,15 +14,28 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CreateLotResponseDTO {
+
     private UUID id;
+
     private String title;
+
     private String description;
+
     private LocalDateTime startTime;
+
     private LocalDateTime endTime;
+
     private LotStatus status;
+
     private LotType lotType;
+
     private String imageUrl;
+
     private BigDecimal startingPrice;
+
     private BigDecimal currentPrice;
+
     private String location;
+
+    private UserProfileDTO seller;
 }
