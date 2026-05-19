@@ -14,4 +14,5 @@ public interface LotRepository extends JpaRepository<Lot, UUID> {
     List<Lot> findByLotType(String lotType);
     @Query("SELECT l FROM Lot l JOIN FETCH l.seller WHERE l.id = :id")
     Optional<Lot> findByIdWithSeller(UUID id);
+    List<Lot> findBySellerId(UUID sellerId);
 }

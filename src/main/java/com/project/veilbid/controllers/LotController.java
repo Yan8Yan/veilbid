@@ -38,16 +38,12 @@ public class LotController {
         return new ResponseEntity<>(createLotResponseDTO, HttpStatus.CREATED);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<CreateLotResponseDTO>
-    getLotById(@PathVariable UUID id) {
-
+    @GetMapping("/{id:[0-9a-fA-F-]{36}}")
+    public ResponseEntity<CreateLotResponseDTO> getLotById(@PathVariable UUID id) {
         recommendationService.trackGlobalLot(id);
 
-        Lot lot = lotService.findById(id);
-
         return ResponseEntity.ok(
-                lotMapper.toDTO(lot)
+                lotMapper.toDTO(lotService.findById(id))
         );
     }
 
@@ -63,4 +59,28 @@ public class LotController {
 
         return ResponseEntity.ok(dtoList);
     }
+    @GetMapping("/me")
+    public ResponseEntity<List<CreateLotResponseDTO>> getMyLots(@AuthenticationPrincipal Jwt jwt) {
+        UUID userId = UUID.fromString(jwt.getSubject());
+
+        return ResponseEntity.ok(
+                lotService.getMyLots(userId)
+                        .stream()
+                        .map(lotMapper::toDTO)
+                        .toList()
+        );
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteLot(
+            @AuthenticationPrincipal Jwt jwt,
+            @PathVariable UUID id
+    ) {
+        UUID userId = UUID.fromString(jwt.getSubject());
+
+        lotService.deleteLot(userId, id);
+
+        return ResponseEntity.noContent().build();
+    }
 }
+

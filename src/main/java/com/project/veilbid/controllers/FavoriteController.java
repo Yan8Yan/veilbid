@@ -19,7 +19,7 @@ import java.util.UUID;
 public class FavoriteController {
 
     private final FavoriteService favoriteService;
-    private final LotMapper lotMapper; // ✅ СЮДА
+    private final LotMapper lotMapper;
 
     @PostMapping("/{lotId}")
     public ResponseEntity<Void> addFavorite(
@@ -41,18 +41,4 @@ public class FavoriteController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/me")
-    public ResponseEntity<List<CreateLotResponseDTO>> getMyFavorites(
-            @AuthenticationPrincipal Jwt jwt
-    ) {
-        UUID userId = UUID.fromString(jwt.getSubject());
-
-        List<CreateLotResponseDTO> result =
-                favoriteService.getUserFavorites(userId)
-                        .stream()
-                        .map(lotMapper::toDTO)
-                        .toList();
-
-        return ResponseEntity.ok(result);
-    }
 }

@@ -55,5 +55,21 @@ public class LotServiceImpl implements LotService {
         return lotRepository.findByLotType(lotType);
     }
 
+    @Override
+    public List<Lot> getMyLots(UUID sellerId) {
+        return lotRepository.findBySellerId(sellerId);
+    }
+
+    @Override
+    public void deleteLot(UUID userId, UUID lotId) {
+        Lot lot = lotRepository.findById(lotId)
+                .orElseThrow(() -> new RuntimeException("Lot not found"));
+
+        if (!lot.getSeller().getId().equals(userId)) {
+            throw new RuntimeException("You can't delete this lot");
+        }
+
+        lotRepository.delete(lot);
+    }
 
 }
