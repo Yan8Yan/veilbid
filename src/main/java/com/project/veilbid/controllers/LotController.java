@@ -47,18 +47,6 @@ public class LotController {
         );
     }
 
-    @GetMapping
-    public ResponseEntity<List<CreateLotResponseDTO>> getAllLots(
-            @RequestParam(required = false) String lotType
-    ) {
-        List<Lot> lots = lotService.getAllLots(lotType);
-
-        List<CreateLotResponseDTO> dtoList = lots.stream()
-                .map(lotMapper::toDTO)
-                .toList();
-
-        return ResponseEntity.ok(dtoList);
-    }
     @GetMapping("/me")
     public ResponseEntity<List<CreateLotResponseDTO>> getMyLots(@AuthenticationPrincipal Jwt jwt) {
         UUID userId = UUID.fromString(jwt.getSubject());
@@ -91,6 +79,20 @@ public class LotController {
         UUID userId = UUID.fromString(jwt.getSubject());
         lotService.closeLot(id, userId);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping
+    public ResponseEntity<List<CreateLotResponseDTO>> getAllLots(
+            @RequestParam(required = false) String lotType,
+            @RequestParam(required = false) String search
+    ) {
+        List<Lot> lots = lotService.getAllLots(lotType, search);
+
+        return ResponseEntity.ok(
+                lots.stream()
+                        .map(lotMapper::toDTO)
+                        .toList()
+        );
     }
 }
 

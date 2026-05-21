@@ -18,4 +18,6 @@ public interface LotRepository extends JpaRepository<Lot, UUID> {
     Optional<Lot> findByIdWithSeller(UUID id);
     List<Lot> findBySellerId(UUID sellerId);
     List<Lot> findAllByStatusAndEndTimeBefore(LotStatus status, LocalDateTime endTime);
+    List<Lot> findByTitleContainingIgnoreCase(String title);
+    List<Lot> findByLotTypeAndTitleContainingIgnoreCase(String lotType, String title);
 }

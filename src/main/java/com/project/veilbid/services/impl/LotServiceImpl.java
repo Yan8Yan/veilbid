@@ -86,4 +86,24 @@ public class LotServiceImpl implements LotService {
         lotRepository.save(lot);
     }
 
+    @Override
+    public List<Lot> getAllLots(String lotType, String search) {
+
+        List<Lot> lots;
+
+        if (lotType == null && (search == null || search.isBlank())) {
+            return lotRepository.findAll();
+        }
+
+        if (lotType != null && search != null && !search.isBlank()) {
+            return lotRepository.findByLotTypeAndTitleContainingIgnoreCase(lotType, search);
+        }
+
+        if (lotType != null) {
+            return lotRepository.findByLotType(lotType);
+        }
+
+        return lotRepository.findByTitleContainingIgnoreCase(search);
+    }
+
 }
