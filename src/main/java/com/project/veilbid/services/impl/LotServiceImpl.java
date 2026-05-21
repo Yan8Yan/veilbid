@@ -1,5 +1,6 @@
 package com.project.veilbid.services.impl;
 
+import com.project.veilbid.domain.dto.UpdateLotRequestDTO;
 import com.project.veilbid.domain.entities.Lot;
 import com.project.veilbid.domain.entities.User;
 import com.project.veilbid.domain.enums.LotStatus;
@@ -122,5 +123,27 @@ public class LotServiceImpl implements LotService {
 
         lot.setStatus(LotStatus.CLOSED);
         lotRepository.save(lot);
+    }
+
+    @Override
+    public Lot updateLot(UUID userId, UUID lotId, UpdateLotRequestDTO dto) {
+
+        Lot lot = lotRepository.findById(lotId)
+                .orElseThrow(() -> new RuntimeException("Lot not found"));
+
+        if (!lot.getSeller().getId().equals(userId)) {
+            throw new RuntimeException("You can't edit this lot");
+        }
+
+        lot.setTitle(dto.getTitle());
+        lot.setDescription(dto.getDescription());
+        lot.setStartTime(dto.getStartTime());
+        lot.setEndTime(dto.getEndTime());
+        lot.setLotType(dto.getLotType());
+        lot.setImageUrl(dto.getImageUrl());
+        lot.setStartingPrice(dto.getStartingPrice());
+        lot.setLocation(dto.getLocation());
+
+        return lotRepository.save(lot);
     }
 }

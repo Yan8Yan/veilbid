@@ -1,5 +1,6 @@
 package com.project.veilbid.services;
 
+import com.project.veilbid.domain.dto.UpdateLotRequestDTO;
 import com.project.veilbid.domain.entities.Lot;
 import com.project.veilbid.domain.requests.CreateLotRequest;
 import org.springframework.stereotype.Service;
@@ -17,4 +18,5 @@ public interface LotService {
     List<Lot> getMyLots(UUID sellerId);
     void deleteLot(UUID userId, UUID lotId);
     void closeLot(UUID lotId, UUID userId);
+    Lot updateLot(UUID userId, UUID lotId, UpdateLotRequestDTO dto);
 }

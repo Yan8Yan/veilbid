@@ -2,6 +2,7 @@ package com.project.veilbid.controllers;
 
 import com.project.veilbid.domain.dto.CreateLotRequestDTO;
 import com.project.veilbid.domain.dto.CreateLotResponseDTO;
+import com.project.veilbid.domain.dto.UpdateLotRequestDTO;
 import com.project.veilbid.domain.entities.Lot;
 import com.project.veilbid.domain.requests.CreateLotRequest;
 import com.project.veilbid.mappers.LotMapper;
@@ -30,16 +31,25 @@ public class LotController {
     @PostMapping
     public ResponseEntity<CreateLotResponseDTO> createLot(
             @AuthenticationPrincipal Jwt jwt,
-            @Valid @RequestBody CreateLotRequestDTO createLotRequestDTO){
-        CreateLotRequest createLotRequest = lotMapper.fromDTO(createLotRequestDTO);
+            @Valid @RequestBody CreateLotRequestDTO dto) {
+
         UUID userId = UUID.fromString(jwt.getSubject());
-        Lot createdLot =  lotService.createLotRequest(userId, createLotRequest);
-        CreateLotResponseDTO createLotResponseDTO = lotMapper.toDTO(createdLot);
-        return new ResponseEntity<>(createLotResponseDTO, HttpStatus.CREATED);
+
+        Lot createdLot = lotService.createLotRequest(
+                userId,
+                lotMapper.fromDTO(dto)
+        );
+
+        return new ResponseEntity<>(
+                lotMapper.toDTO(createdLot),
+                HttpStatus.CREATED
+        );
     }
 
-    @GetMapping("/{id:[0-9a-fA-F-]{36}}")
+    // ✅ FIXED (без regex)
+    @GetMapping("/{id}")
     public ResponseEntity<CreateLotResponseDTO> getLotById(@PathVariable UUID id) {
+
         recommendationService.trackGlobalLot(id);
 
         return ResponseEntity.ok(
@@ -47,8 +57,26 @@ public class LotController {
         );
     }
 
+    // ✅ ОДИН getAllLots (объединённый)
+    @GetMapping
+    public ResponseEntity<List<CreateLotResponseDTO>> getAllLots(
+            @RequestParam(required = false) String lotType,
+            @RequestParam(required = false) String search
+    ) {
+
+        List<Lot> lots = lotService.getAllLots(lotType, search);
+
+        return ResponseEntity.ok(
+                lots.stream()
+                        .map(lotMapper::toDTO)
+                        .toList()
+        );
+    }
+
     @GetMapping("/me")
-    public ResponseEntity<List<CreateLotResponseDTO>> getMyLots(@AuthenticationPrincipal Jwt jwt) {
+    public ResponseEntity<List<CreateLotResponseDTO>> getMyLots(
+            @AuthenticationPrincipal Jwt jwt) {
+
         UUID userId = UUID.fromString(jwt.getSubject());
 
         return ResponseEntity.ok(
@@ -77,22 +105,22 @@ public class LotController {
             @PathVariable UUID id
     ) {
         UUID userId = UUID.fromString(jwt.getSubject());
+
         lotService.closeLot(id, userId);
+
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping
-    public ResponseEntity<List<CreateLotResponseDTO>> getAllLots(
-            @RequestParam(required = false) String lotType,
-            @RequestParam(required = false) String search
+    @PutMapping("/{id}")
+    public ResponseEntity<CreateLotResponseDTO> updateLot(
+            @AuthenticationPrincipal Jwt jwt,
+            @PathVariable UUID id,
+            @RequestBody UpdateLotRequestDTO dto
     ) {
-        List<Lot> lots = lotService.getAllLots(lotType, search);
+        UUID userId = UUID.fromString(jwt.getSubject());
 
-        return ResponseEntity.ok(
-                lots.stream()
-                        .map(lotMapper::toDTO)
-                        .toList()
-        );
+        Lot updated = lotService.updateLot(userId, id, dto);
+
+        return ResponseEntity.ok(lotMapper.toDTO(updated));
     }
 }
-
