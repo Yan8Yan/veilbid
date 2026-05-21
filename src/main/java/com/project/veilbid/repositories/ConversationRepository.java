@@ -4,6 +4,7 @@ import com.project.veilbid.domain.entities.Conversation;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -20,4 +21,11 @@ public interface ConversationRepository extends JpaRepository<Conversation, UUID
             UUID p1,
             UUID p2
     );
+
+    @Query("""
+    SELECT c FROM Conversation c
+    WHERE c.participantOne.id = :userId
+       OR c.participantTwo.id = :userId
+    """)
+    List<Conversation> findAllByUserId(UUID userId);
 }

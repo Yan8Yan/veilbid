@@ -1,12 +1,14 @@
 package com.project.veilbid.controllers;
 
 import com.project.veilbid.domain.dto.ConversationDTO;
+import com.project.veilbid.domain.dto.ConversationListItemDTO;
 import com.project.veilbid.services.impl.ConversationService;
 
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -36,5 +38,12 @@ public class ConversationController {
     ) {
 
         return conversationService.get(id);
+    }
+
+    @GetMapping("/user/{userId}")
+    public List<ConversationListItemDTO> getUserConversations(
+            @PathVariable UUID userId
+    ) {
+        return conversationService.getUserConversations(userId);
     }
 }
