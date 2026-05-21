@@ -13,10 +13,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 
 @Entity
-@Table(name = "conversations")
+@Table(
+        name = "conversations",
+        uniqueConstraints = @UniqueConstraint(
+                columnNames = {"lot_id", "participant_one_id", "participant_two_id"}
+        )
+)
 @Getter
 @Setter
 @NoArgsConstructor
@@ -28,12 +34,15 @@ public class Conversation {
     private UUID id;
 
     @ManyToOne
+    @JoinColumn(name = "participant_one_id")
     private User participantOne;
 
     @ManyToOne
+    @JoinColumn(name = "participant_two_id")
     private User participantTwo;
 
     @ManyToOne
+    @JoinColumn(name = "lot_id")
     private Lot lot;
 
     @CreatedDate

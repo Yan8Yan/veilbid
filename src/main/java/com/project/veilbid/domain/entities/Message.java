@@ -1,4 +1,5 @@
 package com.project.veilbid.domain.entities;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.veilbid.domain.enums.LotStatus;
 import com.project.veilbid.domain.enums.LotType;
 import jakarta.persistence.*;
@@ -12,14 +13,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
-
-
-@Entity
-@Table(name = "messages")
+import com.fasterxml.jackson.annotation.JsonBackReference;
 @Getter
 @Setter
+@Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "messages")
 public class Message {
 
     @Id
@@ -28,13 +28,17 @@ public class Message {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "conversation_id")
+    @JsonIgnore
     private Conversation conversation;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sender_id")
+    @JsonIgnore
     private User sender;
 
     @Column(columnDefinition = "TEXT", nullable = false)
     private String text;
 
     private LocalDateTime sentAt;
+
 }
