@@ -28,6 +28,7 @@ public class MessageService {
         return new MessageDTO(
                 message.getId(),
                 message.getSender().getId(),
+                message.getSender().getName(),
                 message.getText(),
                 message.getSentAt()
         );

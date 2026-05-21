@@ -11,7 +11,12 @@ import java.util.UUID;
 public class MessageDTO {
 
     private UUID id;
+
     private UUID senderId;
+
+    private String senderName;
+
     private String text;
+
     private LocalDateTime sentAt;
 }
